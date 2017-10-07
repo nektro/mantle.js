@@ -3,7 +3,7 @@
  * A modular programming language lexer and parser, currently written in JavaScript
  *
  * https://github.com/Nektro/mantle.js
- * 
+ *
  * mantle-corgi
  * Corgi, an HTML Preprocessor built for style and structure
  */
@@ -24,7 +24,6 @@ export const mantle_corgi = ({
         }
         isValidVarChar(c) {
             return ((c >= 'a') && (c <= 'z') || ((c >= '0') && (c <= '9')) || (c === '-'));
-            return false;
         }
     })(),
     parser: new (class extends mantle.parser.Parser {
@@ -47,11 +46,11 @@ export const mantle_corgi = ({
             this.addRule(["AttrListPart","Sym_,","Attr"], function(list, i) {
                 return new mantle.parser.ExpressionContainer("AttrListPart", [...list[i].value,list[i+2]]);
             });
-            
+
             this.addRule(["AttrListPart","Sym_]"], function(list, i) {
                 return new mantle.parser.ExpressionContainer("AttrList", list[i].value);
             });
-            
+
             this.addRule(["Identifier","AttrList"], function(list, i) {
                 return new mantle.parser.ExpressionContainer("ElementIA", [list[i],list[i+1]]);
             });
@@ -121,7 +120,7 @@ export const mantle_corgi = ({
     compileExpr: function(expr) {
         const {type,value,line,pos} = expr;
         let a,b,c,d;
-        
+
         switch (type) {
             case 'Document':
             case 'Children': {
@@ -157,7 +156,7 @@ export const mantle_corgi = ({
                 return (`<${a}${b}></${a}>`);
             }
             case 'ElementI': {
-                return (`<${value} />`);
+                return (`<${value}></${value}>`);
             }
         }
     },
