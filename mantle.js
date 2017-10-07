@@ -261,12 +261,15 @@ exps.parser.Parser = (class Parser {
                     expList[i] = exp;
                     expList.splice(i + 1, rule.keys.length - 1);
 
-                    if (expList.length === 1) return expList[0];
+                    if (expList.length === 1) {
+                        return expList[0];
+                    }
                 }
             }
         }
         while (expList.length !== len);
 
+        console.log(expList);
         throw (new Error('ParserError: AST construction incomplete'));
     }
     // takes in string
