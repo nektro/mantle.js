@@ -37,16 +37,44 @@ export const mantle_json = ({
                 return new mantle.parser.ExpressionSimple("Decimal", a.line, a.pos, parseFloat(`${a.value}.${b.value}`));
             });
 
-            this.addRule(["String","Sym_:"], function(list, i) { return new mantle.parser.ExpressionSimple("PairKey", list[i].line, list[i].pos, list[i].value); });
-            this.addRule(["PairKey",VALUE], function(list, i) { return new mantle.parser.ExpressionContainer("Pair", [list[i],list[i+1]]); });
-            this.addRule(["Pair"], function(list, i) { return new mantle.parser.ExpressionContainer("Members", [list[i]]); });
-            this.addRule(["Members","Sym_,","Members"], function(list, i) { return new mantle.parser.ExpressionContainer("Members", [...list[i].value,...list[i+2].value]); });
-            this.addRule(["Sym_{","Members","Sym_}"], function(list, i) { return new mantle.parser.ExpressionContainer("Object", list[i+1].value); });
-            this.addRule(["Sym_[",VALUE], function(list, i) { return new mantle.parser.ExpressionContainer("Elements", [list[i+1]]); });
-            this.addRule(["Elements","Sym_,",VALUE], function(list, i) { return new mantle.parser.ExpressionContainer("Elements", [...list[i].value,list[i+2]]); });
-            this.addRule(["Elements","Sym_]"], function(list, i) { return new mantle.parser.ExpressionContainer("Array", list[i].value); });
-            this.addRule(["Sym_[","Sym_]"], function(list, i) { return new mantle.parser.ExpressionContainer("Array", [], list[i].line, list[i].pos); });
-            this.addRule(["Sym_{","Sym_}"], function(list, i) { return new mantle.parser.ExpressionContainer("Object", [], list[i].line, list[i].pos); });
+            this.addRule(["String","Sym_:"], function(list, i) {
+                return new mantle.parser.ExpressionSimple("PairKey", list[i].line, list[i].pos, list[i].value);
+            });
+
+            this.addRule(["PairKey",VALUE], function(list, i) {
+                return new mantle.parser.ExpressionContainer("Pair", [list[i],list[i+1]]);
+            });
+
+            this.addRule(["Pair"], function(list, i) {
+                return new mantle.parser.ExpressionContainer("Members", [list[i]]);
+            });
+
+            this.addRule(["Members","Sym_,","Members"], function(list, i) {
+                return new mantle.parser.ExpressionContainer("Members", [...list[i].value,...list[i+2].value]);
+            });
+
+            this.addRule(["Sym_{","Members","Sym_}"], function(list, i) {
+                return new mantle.parser.ExpressionContainer("Object", list[i+1].value);
+            });
+            this.addRule(["Sym_[",VALUE], function(list, i) {
+                return new mantle.parser.ExpressionContainer("Elements", [list[i+1]]);
+            });
+
+            this.addRule(["Elements","Sym_,",VALUE], function(list, i) {
+                return new mantle.parser.ExpressionContainer("Elements", [...list[i].value,list[i+2]]);
+            });
+
+            this.addRule(["Elements","Sym_]"], function(list, i) {
+                return new mantle.parser.ExpressionContainer("Array", list[i].value);
+            });
+
+            this.addRule(["Sym_[","Sym_]"], function(list, i) {
+                return new mantle.parser.ExpressionContainer("Array", [], list[i].line, list[i].pos);
+            });
+
+            this.addRule(["Sym_{","Sym_}"], function(list, i) {
+                return new mantle.parser.ExpressionContainer("Object", [], list[i].line, list[i].pos);
+            });
         }
     })(),
     parse: function(src) {
