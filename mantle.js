@@ -72,6 +72,8 @@ exps.lexer.Lexer = (class Lexer {
                     else
                     if (c === '/') {
                         if (this.hasLineComments) {
+                            buff += c;
+                            
                             if (buff.endsWith(`//`)) {
                                 buff = "";
                                 inM = mantle.lexer.LexMode.LCom;
@@ -79,7 +81,7 @@ exps.lexer.Lexer = (class Lexer {
                         }
                         else
                         if (this.hasMultiComments) {
-                            //
+                            buff += c;
                         }
                         else
                         if (!(this.symbols.includes(c))) {
@@ -97,7 +99,7 @@ exps.lexer.Lexer = (class Lexer {
                         }
                     }
                     else
-                    if (c === ' ' || this.symbols.includes(c)) {
+                    if (c === ' ' || c === '\n' || this.symbols.includes(c)) {
                         if (buff.length > 0) {
                             if (this.keywords.includes(buff)) {
                                 tokenList.push(new mantle.lexer.Token(mantle.lexer.TokenType.Keyword, buff, line, pos));
@@ -108,12 +110,12 @@ exps.lexer.Lexer = (class Lexer {
 
                             buff = "";
                         }
-                        if (c !== ' ') {
+                        if (this.symbols.includes(c)) {
                             tokenList.push(new mantle.lexer.Token(mantle.lexer.TokenType.Symbol, c, line, pos));
                         }
                     }
                     else
-                    if (['\n','\t'].includes(c)) {
+                    if (['\t','\r'].includes(c)) {
                         //
                     }
                     else
@@ -131,7 +133,7 @@ exps.lexer.Lexer = (class Lexer {
 
                     if (c == buff.charAt(0)) {
                         if ((!(buff.endsWith("\\" + c))) != (buff.endsWith("\\\\" + c))) {
-                            tokenList.push(new mantle.lexer.Token(mantle.lexer.TokenType.String, buff, line, pos - buff.length + 1));
+                            tokenList.push(new mantle.lexer.Token(mantle.lexer.TokenType.String, buff, line, pos - buff.length - 1));
                             buff = "";
                             inM = mantle.lexer.LexMode.Def;
                         }
@@ -240,6 +242,9 @@ exps.parser.Parser = (class Parser {
                     for (let k = 0; k < rule.keys.length; k++) {
                         const l = rule.keys[k];
 
+                        if (i + k >= expList.length) {
+                            continue loop3;
+                        }
                         if (l.__proto__.constructor === String) {
                             if (!(expList[i + k].type === l)) {
                                 continue loop3;
@@ -262,7 +267,7 @@ exps.parser.Parser = (class Parser {
         }
         while (expList.length !== len);
 
-        return expList;
+        throw (new Error('ParserError: AST construction incomplete'));
     }
     // takes in string
     // returns if word is valid ID
