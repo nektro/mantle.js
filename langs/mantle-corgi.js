@@ -18,7 +18,7 @@ export const mantle_corgi = ({
                 ['doctype'],
                 ['[',']','=',',','(',')'],
                 ['"'],
-                false,
+                true,
                 false
             );
         }
@@ -56,8 +56,8 @@ export const mantle_corgi = ({
                 return new mantle.parser.ExpressionContainer("ElementIA", [list[i],list[i+1]]);
             });
 
-            this.addRule(["Sym_(","String","Sym_)"], function(list, i) {
-                return new mantle.parser.ExpressionContainer("Children", [list[i+1]]);
+            this.addRule(["String","Sym_)"], function(list, i) {
+                return new mantle.parser.ExpressionContainer("ChildsPart", [list[i]]);
             });
 
             this.addRule(["Identifier","Children"], function(list, i) {
@@ -84,6 +84,13 @@ export const mantle_corgi = ({
             });
 
             this.addRule(["Identifier","ChildsPart"], function(list, i) {
+                return new mantle.parser.ExpressionContainer("ChildsPart", [
+                    new mantle.parser.ExpressionSimple("ElementI", 0, 0, list[i].value),
+                    ...list[i+1].value
+                ]);
+            });
+
+            this.addRule(["Identifier","Sym_)"], function(list, i) {
                 return new mantle.parser.ExpressionContainer("ChildsPart", [
                     new mantle.parser.ExpressionSimple("ElementI", 0, 0, list[i].value),
                     ...list[i+1].value
