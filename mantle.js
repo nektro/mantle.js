@@ -73,7 +73,7 @@ exps.lexer.Lexer = (class Lexer {
                     if (c === '/') {
                         if (this.hasLineComments) {
                             buff += c;
-                            
+
                             if (buff.endsWith(`//`)) {
                                 buff = "";
                                 inM = mantle.lexer.LexMode.LCom;
@@ -230,15 +230,12 @@ exps.parser.Parser = (class Parser {
 
         let len = 0;
 
-        loop1:
         do {
             len = expList.length;
 
-            loop2:
             for (let rule of this.rules) {
                 loop3:
                 for (let i = 0; i < expList.length; i++) {
-                    loop4:
                     for (let k = 0; k < rule.keys.length; k++) {
                         const l = rule.keys[k];
 
