@@ -6,24 +6,23 @@
  */
 //
 
-// module exports construction object
-const exps = {
+// module exports object
+const mantle = {
     lexer: {},
     parser: {}
 };
-
 
 // // // //
 // Lexer //
 // // // //
 
 // Token type enum
-exps.lexer.TokenType = (Object.freeze({
+mantle.lexer.TokenType = (Object.freeze({
     Keyword: 'Keyword', Symbol: 'Symbol', Word: 'Word', String: 'String'
 }));
 
 // Token class
-exps.lexer.Token = (class Token {
+mantle.lexer.Token = (class Token {
     constructor(ty, val, l, p) {
         this.type = ty;
         this.value = val;
@@ -36,12 +35,12 @@ exps.lexer.Token = (class Token {
 });
 
 // Lexing mode enum
-exps.lexer.LexMode = (Object.freeze({
+mantle.lexer.LexMode = (Object.freeze({
     Def: 0, String: 1, LCom: 2, MlCom: 3
 }));
 
 // base Lexer class that langauges inherit
-exps.lexer.Lexer = (class Lexer {
+mantle.lexer.Lexer = (class Lexer {
     constructor(keys, syms, strs, hLC, hMC) {
         this.keywords = keys;
         this.symbols = syms;
@@ -177,7 +176,7 @@ exps.lexer.Lexer = (class Lexer {
 // // // // //
 
 // base Expression class
-exps.parser.Expression = (class Expression {
+mantle.parser.Expression = (class Expression {
     constructor(t, l, p) {
         this.type = t;
         this.line = l;
@@ -186,7 +185,7 @@ exps.parser.Expression = (class Expression {
 });
 
 // Expression type that holds one value
-exps.parser.ExpressionSimple = (class ExpressionSimple extends exps.parser.Expression {
+mantle.parser.ExpressionSimple = (class ExpressionSimple extends mantle.parser.Expression {
     constructor(n, l, p, v) {
         super(n, l, p);
         this.value = v;
@@ -194,7 +193,7 @@ exps.parser.ExpressionSimple = (class ExpressionSimple extends exps.parser.Expre
 });
 
 // Expression type that holds collection of expressions
-exps.parser.ExpressionContainer = (class ExpressionContainer extends exps.parser.Expression {
+mantle.parser.ExpressionContainer = (class ExpressionContainer extends mantle.parser.Expression {
     constructor(n, a, l, p) {
         super(n, a.length > 0 ? a[0].line : l, a.length > 0 ? a[0].pos : p);
         this.value = a;
@@ -202,7 +201,7 @@ exps.parser.ExpressionContainer = (class ExpressionContainer extends exps.parser
 });
 
 // Parser parse rule
-exps.parser.ParserParseRule = (class ParserParseRule {
+mantle.parser.ParserParseRule = (class ParserParseRule {
     constructor(ks, os) {
         this.keys = ks;
         this.onSuccess = os;
@@ -210,7 +209,7 @@ exps.parser.ParserParseRule = (class ParserParseRule {
 });
 
 // base Parser class inherited by langauge specific implementations
-exps.parser.Parser = (class Parser {
+mantle.parser.Parser = (class Parser {
     constructor() {
         this.rules = new Array();
     }
@@ -285,17 +284,3 @@ exps.parser.Parser = (class Parser {
         this.rules.push(new mantle.parser.ParserParseRule(arr, cb));
     }
 });
-
-
-
-
-
-
-
-
-
-export const mantle = (function() {
-    return {
-        ...exps
-    };
-})();
