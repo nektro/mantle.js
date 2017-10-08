@@ -286,5 +286,10 @@
         }
     });
 
-    this.mantle = mantle;
+    if (typeof module !== undefined && 'exports' in module) {
+        module.exports = mantle;
+    }
+    else {
+        this.corgi = mantle;
+    }
 })();
