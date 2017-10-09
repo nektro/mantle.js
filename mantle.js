@@ -290,6 +290,6 @@
         module.exports = mantle;
     }
     else {
-        this.corgi = mantle;
+        this.mantle = mantle;
     }
 })();

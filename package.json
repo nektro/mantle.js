@@ -1,6 +1,6 @@
 {
   "name": "mantle.js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A modular programming language lexer and parser",
   "main": "index.js",
   "repository": "https://github.com/Nektro/mantle.js.git",
