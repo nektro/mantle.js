@@ -5,6 +5,6 @@
   "main": "index.js",
   "repository": "https://github.com/Nektro/mantle.js.git",
   "author": "Nektro <nektromc@gmail.com>",
-  "license": "Apache 2",
+  "license": "Apache-2.0",
   "private": false
 }
